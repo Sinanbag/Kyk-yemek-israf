@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+<uses-permission android:name="android.permission.INTERNET" />
+<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+<application
+    android:name=".KYKDonusumApp"
+    android:allowBackup="true"
+    android:label="KYK DONUSUM"
+    android:supportsRtl="true"
+    android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar">
+
+    <activity
+        android:name=".MainActivity"
+        android:exported="true">
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+    </activity>
+
+    <activity
+        android:name=".HomeActivity"
+        android:exported="false" />
+
+    <activity
+        android:name=".ProfileActivity"
+        android:exported="false"
+        android:label="Profil Düzenle" />
+
+    <activity
+        android:name=".ChangePasswordActivity"
+        android:exported="false"
+        android:label="Şifre Değiştir" />
+
+    <activity
+        android:name=".MealListActivity"
+        android:exported="false"
+        android:label="Yemek Listesi" />
+
+    <activity
+        android:name=".CancelledMealsActivity"
+        android:exported="false"
+        android:label="İptal Edilen Yemekler" />
+
+    <activity
+        android:name=".AnnouncementsActivity"
+        android:exported="false"
+        android:label="Duyurular" />
+
+    <activity
+        android:name=".MealRatingActivity"
+        android:exported="false"
+        android:label="Yemek Değerlendir" />
+
+</application>
+
+</manifest>
