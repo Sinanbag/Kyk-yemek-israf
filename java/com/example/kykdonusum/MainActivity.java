@@ -122,29 +122,8 @@ public class MainActivity extends AppCompatActivity {
 
         // Şifremi unuttum tıklama olayı
         forgotPasswordText.setOnClickListener(v -> {
-            String email = emailInput.getText().toString().trim();
-
-            if (email.isEmpty()) {
-                Toast.makeText(MainActivity.this, "Lütfen e-posta adresinizi girin", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            if (!isValidEmail(email)) {
-                Toast.makeText(MainActivity.this, "Lütfen geçerli bir e-posta adresi girin", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            mAuth.sendPasswordResetEmail(email)
-                    .addOnSuccessListener(aVoid -> {
-                        Toast.makeText(MainActivity.this,
-                                "Şifre sıfırlama bağlantısı e-posta adresinize gönderildi",
-                                Toast.LENGTH_LONG).show();
-                    })
-                    .addOnFailureListener(e -> {
-                        Toast.makeText(MainActivity.this,
-                                "Şifre sıfırlama bağlantısı gönderilemedi: " + e.getMessage(),
-                                Toast.LENGTH_LONG).show();
-                    });
+            Intent intent = new Intent(MainActivity.this, ResetPasswordActivity.class);
+            startActivity(intent);
         });
 
         // Eğitim butonu tıklama olayı
