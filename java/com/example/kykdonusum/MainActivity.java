@@ -132,6 +132,13 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, EducationActivity.class);
             startActivity(intent);
         });
+
+        // Hakkında butonu tıklama olayı
+        Button btnAbout = findViewById(R.id.btnAbout);
+        btnAbout.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, AboutActivity.class);
+            startActivity(intent);
+        });
     }
 
     private boolean isValidEmail(String email) {
