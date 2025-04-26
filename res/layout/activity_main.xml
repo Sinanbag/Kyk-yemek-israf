@@ -9,7 +9,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Dönüşüm Paneli"
+        android:text="@string/main_title"
         android:textSize="32sp"
         android:textStyle="bold"
         android:layout_marginBottom="8dp"/>
@@ -17,7 +17,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hoş geldiniz!"
+        android:text="@string/welcome"
         android:textSize="18sp"
         android:textColor="#2196F3"
         android:layout_marginBottom="24dp"/>
@@ -26,7 +26,7 @@
         android:id="@+id/emailInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="E-posta"
+        android:hint="@string/email_hint"
         android:inputType="textEmailAddress"
         android:layout_marginBottom="16dp"/>
 
@@ -34,7 +34,7 @@
         android:id="@+id/passwordInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Şifre"
+        android:hint="@string/password_hint"
         android:inputType="textPassword"
         android:layout_marginBottom="8dp"/>
 
@@ -42,7 +42,7 @@
         android:id="@+id/forgotPasswordText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Şifremi Unuttum"
+        android:text="@string/forgot_password"
         android:textColor="@color/purple_500"
         android:layout_gravity="end"
         android:layout_marginBottom="24dp"
@@ -52,21 +52,21 @@
         android:id="@+id/loginButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Giriş Yap"
+        android:text="@string/login"
         android:layout_marginBottom="8dp"/>
 
     <Button
         android:id="@+id/registerButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Kayıt Ol"/>
+        android:text="@string/register"/>
 
     <Button
         android:id="@+id/btnEducation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        android:text="Eğitim"
+        android:text="@string/education"
         android:textSize="18sp" />
 
     <Button
@@ -74,7 +74,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        android:text="Hakkında"
+        android:text="@string/about"
         android:textSize="18sp" />
 
 </LinearLayout>
