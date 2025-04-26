@@ -146,6 +146,13 @@ public class MainActivity extends AppCompatActivity {
                                 Toast.LENGTH_LONG).show();
                     });
         });
+
+        // Eğitim butonu tıklama olayı
+        Button btnEducation = findViewById(R.id.btnEducation);
+        btnEducation.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, EducationActivity.class);
+            startActivity(intent);
+        });
     }
 
     private boolean isValidEmail(String email) {
