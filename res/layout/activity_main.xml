@@ -9,7 +9,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="KYK WALLET"
+        android:text="Dönüşüm Paneli"
         android:textSize="32sp"
         android:textStyle="bold"
         android:layout_marginBottom="32dp"/>
@@ -52,5 +52,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Kayıt Ol"/>
+
+    <Button
+        android:id="@+id/btnEducation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:text="Eğitim"
+        android:textSize="18sp" />
 
 </LinearLayout>

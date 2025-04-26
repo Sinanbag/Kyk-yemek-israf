@@ -54,6 +54,11 @@
         android:exported="false"
         android:label="Yemek Değerlendir" />
 
+    <activity
+        android:name=".EducationActivity"
+        android:exported="false"
+        android:label="Eğitim" />
+
 </application>
 
 </manifest>
