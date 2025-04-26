@@ -51,13 +51,20 @@ public class MainActivity extends AppCompatActivity {
                 String email = emailInput.getText().toString().trim();
                 String password = passwordInput.getText().toString();
 
-                if (email.isEmpty() || password.isEmpty()) {
-                    Toast.makeText(MainActivity.this, "Lütfen tüm alanları doldurun", Toast.LENGTH_SHORT).show();
+                if (email.isEmpty()) {
+                    Toast.makeText(MainActivity.this, "Lütfen e-posta adresinizi girin", Toast.LENGTH_SHORT).show();
                     return;
                 }
-
                 if (!isValidEmail(email)) {
                     Toast.makeText(MainActivity.this, "Lütfen geçerli bir e-posta adresi girin", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (password.isEmpty()) {
+                    Toast.makeText(MainActivity.this, "Lütfen şifrenizi girin", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (password.length() < 6) {
+                    Toast.makeText(MainActivity.this, "Şifre en az 6 karakter olmalıdır", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -82,13 +89,20 @@ public class MainActivity extends AppCompatActivity {
                 String email = emailInput.getText().toString().trim();
                 String password = passwordInput.getText().toString();
 
-                if (email.isEmpty() || password.isEmpty()) {
-                    Toast.makeText(MainActivity.this, "Lütfen tüm alanları doldurun", Toast.LENGTH_SHORT).show();
+                if (email.isEmpty()) {
+                    Toast.makeText(MainActivity.this, "Lütfen e-posta adresinizi girin", Toast.LENGTH_SHORT).show();
                     return;
                 }
-
                 if (!isValidEmail(email)) {
                     Toast.makeText(MainActivity.this, "Lütfen geçerli bir e-posta adresi girin", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (password.isEmpty()) {
+                    Toast.makeText(MainActivity.this, "Lütfen şifrenizi girin", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (password.length() < 6) {
+                    Toast.makeText(MainActivity.this, "Şifre en az 6 karakter olmalıdır", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
