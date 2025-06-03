@@ -94,26 +94,49 @@
       padding: 10px; user-select: none; z-index: 10;
     }
     .menu-wrapper {
-      display: flex; overflow: hidden; width: 1000px; height: 320px;
+      display: flex; overflow: hidden; width: 1000px; height: 400px;
       position: relative; align-items: center;
     }
     #menu-lists {
-      display: flex; transition: transform 1.5s ease-in-out;
-      gap: 10px; align-items: center; justify-content: center;
+      display: flex; transition: transform 0.5s ease-in-out;
+      gap: 20px; align-items: center; justify-content: center;
       width: 100%;
     }
     .menu-list {
-      min-width: 250px; height: 300px; background-color: white;
-      padding: 20px; box-sizing: border-box; text-align: center;
-      border: 2px solid #00bfff; transition: all 0.3s ease;
+      min-width: 300px; height: 380px; background-color: white;
+      padding: 25px; box-sizing: border-box; text-align: center;
+      border: 2px solid #00bfff; transition: all 0.5s ease;
       opacity: 1; transform: scale(1);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     }
     .menu-list.inactive {
-      opacity: 0.4; transform: scale(0.9);
+      opacity: 0.4; transform: scale(0.85);
+      min-width: 250px; height: 320px;
+    }
+    .menu-list.empty {
+      border: 2px dashed #00bfff;
+      background-color: #f8f9fa;
+    }
+    .menu-list.empty h3 {
+      color: #666;
+      border-bottom: none;
+      margin-bottom: 0;
+    }
+    .menu-list.empty p {
+      color: #666;
+      font-style: italic;
+      margin-top: 10px;
     }
     .menu-list h3 {
-      border-bottom: 1px solid #00bfff; padding-bottom: 10px;
-      margin-bottom: 10px;
+      border-bottom: 2px solid #00bfff; padding-bottom: 15px;
+      margin-bottom: 20px; font-size: 20px;
+    }
+    .menu-list p {
+      font-size: 18px;
+      margin: 15px 0;
+      padding: 10px;
+      background-color: #f8f9fa;
+      border-radius: 5px;
     }
 
     .puan-container {
@@ -151,6 +174,33 @@
     .footer img {
       width: 100%; max-height: 1350px; object-fit: cover;
     }
+
+    .meal-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin: 20px 0;
+    }
+
+    .meal-button {
+      padding: 15px 30px;
+      font-size: 18px;
+      background-color: #003366;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .meal-button:hover {
+      background-color: #0055a5;
+    }
+
+    .meal-button.active {
+      background-color: #0055a5;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
   </style>
 </head>
 <body>
@@ -173,6 +223,11 @@
     <div class="slide" style="background-image: url('resim3.jpg');">
       <div class="overlay"><h2>Haber Başlığı 3</h2><button>Daha Fazlası</button></div>
     </div>
+  </div>
+
+  <div class="meal-buttons">
+    <button class="meal-button active" onclick="changeMealType('breakfast')">Kahvaltı</button>
+    <button class="meal-button" onclick="changeMealType('dinner')">Akşam Yemeği</button>
   </div>
 
   <div class="menu-container">
@@ -234,34 +289,174 @@
       slides[currentSlide].classList.add('active');
     }, 5000);
 
-    const menus = Array.from({ length: 30 }, (_, i) => {
-      const date = new Date(2025, 5, i + 1);
-      return {
-        date: date.toLocaleDateString('tr-TR'),
-        items: ['ANA YEMEK', 'YAN YİYECEK', 'ÇORBA', 'EKSTRA']
-      };
-    });
+    function getDaysInMonth(year, month) {
+      return new Date(year, month + 1, 0).getDate();
+    }
 
-    let currentIndex = 1;
+    function createMenuData() {
+      const today = new Date();
+      const currentYear = today.getFullYear();
+      const currentMonth = today.getMonth();
+      const currentDay = today.getDate();
+      const daysInMonth = getDaysInMonth(currentYear, currentMonth);
+      
+      // localStorage'dan menüleri al
+      const savedMenus = JSON.parse(localStorage.getItem('menus') || '{}');
+      const breakfastMenu = [];
+      const dinnerMenu = [];
+      
+      // Önceki günün menüsünü ekle
+      const yesterday = new Date(currentYear, currentMonth, currentDay - 1);
+      const yesterdayDate = yesterday.toLocaleDateString('tr-TR');
+      
+      // Önceki günün menüsünü localStorage'dan al
+      const yesterdayBreakfast = savedMenus.breakfast?.find(m => m.date === yesterdayDate);
+      const yesterdayDinner = savedMenus.dinner?.find(m => m.date === yesterdayDate);
+      
+      // Önceki günün menüsünü ekle
+      breakfastMenu.push({
+        date: yesterdayDate,
+        items: yesterdayBreakfast ? 
+          [yesterdayBreakfast.main, yesterdayBreakfast.side, yesterdayBreakfast.extra].filter(Boolean) : 
+          ['Menü henüz yüklenmedi'],
+        isEmpty: !yesterdayBreakfast
+      });
+      
+      dinnerMenu.push({
+        date: yesterdayDate,
+        items: yesterdayDinner ? 
+          [yesterdayDinner.main, yesterdayDinner.side, yesterdayDinner.soup, yesterdayDinner.extra].filter(Boolean) : 
+          ['Menü henüz yüklenmedi'],
+        isEmpty: !yesterdayDinner
+      });
+      
+      // Güncel ve gelecek günlerin menülerini ekle
+      for (let day = currentDay; day <= daysInMonth; day++) {
+        const date = new Date(currentYear, currentMonth, day);
+        const menuDate = date.toLocaleDateString('tr-TR');
+        
+        // Kahvaltı menüsünü localStorage'dan al
+        const breakfast = savedMenus.breakfast?.find(m => m.date === menuDate);
+        breakfastMenu.push({
+          date: menuDate,
+          items: breakfast ? 
+            [breakfast.main, breakfast.side, breakfast.extra].filter(Boolean) : 
+            ['Menü henüz yüklenmedi'],
+          isEmpty: !breakfast
+        });
+        
+        // Akşam yemeği menüsünü localStorage'dan al
+        const dinner = savedMenus.dinner?.find(m => m.date === menuDate);
+        dinnerMenu.push({
+          date: menuDate,
+          items: dinner ? 
+            [dinner.main, dinner.side, dinner.soup, dinner.extra].filter(Boolean) : 
+            ['Menü henüz yüklenmedi'],
+          isEmpty: !dinner
+        });
+      }
+
+      // Ayın son gününden sonraki kutu için "Bu ay bitti" mesajı
+      const nextMonthFirstDay = new Date(currentYear, currentMonth + 1, 1);
+      const nextMonthDate = nextMonthFirstDay.toLocaleDateString('tr-TR');
+      
+      breakfastMenu.push({
+        date: nextMonthDate,
+        items: ['Bu ay bitti'],
+        isEmpty: true,
+        isEndOfMonth: true
+      });
+      
+      dinnerMenu.push({
+        date: nextMonthDate,
+        items: ['Bu ay bitti'],
+        isEmpty: true,
+        isEndOfMonth: true
+      });
+      
+      return { breakfast: breakfastMenu, dinner: dinnerMenu };
+    }
+
+    let currentMealType = 'breakfast';
+    const menus = createMenuData();
+
+    function changeMealType(type) {
+      currentMealType = type;
+      currentIndex = 1; // Start from current day (index 1 because index 0 is empty previous day)
+      
+      document.querySelectorAll('.meal-button').forEach(button => {
+        button.classList.remove('active');
+      });
+      event.target.classList.add('active');
+      
+      renderMenus();
+    }
+
+    let currentIndex = 1; // Start from current day
     function renderMenus() {
       const wrapper = document.getElementById('menu-lists');
       wrapper.innerHTML = '';
+      const currentMenus = menus[currentMealType];
+      
       for (let i = currentIndex - 1; i <= currentIndex + 1; i++) {
-        if (i >= 0 && i < menus.length) {
+        if (i >= 0 && i < currentMenus.length) {
           const div = document.createElement('div');
-          div.className = 'menu-list' + (i === currentIndex ? '' : ' inactive');
-          div.innerHTML = `<h3>${menus[i].date}</h3>` + menus[i].items.map(item => `<p>${item}</p>`).join('');
+          const menu = currentMenus[i];
+          const isActive = i === currentIndex;
+          const isEmpty = menu.isEmpty;
+          
+          div.className = 'menu-list' + 
+            (isActive ? '' : ' inactive') + 
+            (isEmpty ? ' empty' : '');
+            
+          if (menu.isEndOfMonth) {
+            div.innerHTML = `<h3>${menu.date}</h3><p style="color: #666; font-style: italic;">${menu.items[0]}</p>`;
+          } else {
+            div.innerHTML = `<h3>${menu.date}</h3>` + 
+              menu.items.map(item => `<p>${item}</p>`).join('');
+          }
+          
           wrapper.appendChild(div);
         }
       }
+      updateArrowVisibility();
     }
+
     function nextMenu() {
-      if (currentIndex < menus.length - 1) { currentIndex++; renderMenus(); }
+      if (currentIndex < menus[currentMealType].length - 2) { // -2 because we don't want to show the "end of month" message
+        currentIndex++; 
+        renderMenus(); 
+      }
     }
+
     function prevMenu() {
-      if (currentIndex > 0) { currentIndex--; renderMenus(); }
+      if (currentIndex > 1) { // Don't go before current day
+        currentIndex--; 
+        renderMenus(); 
+      }
     }
-    renderMenus();
+
+    // Disable left arrow when at current day
+    function updateArrowVisibility() {
+      const leftArrow = document.querySelector('.arrow.left');
+      const rightArrow = document.querySelector('.arrow.right');
+      
+      if (currentIndex <= 1) {
+        leftArrow.style.opacity = '0.3';
+        leftArrow.style.pointerEvents = 'none';
+      } else {
+        leftArrow.style.opacity = '1';
+        leftArrow.style.pointerEvents = 'auto';
+      }
+      
+      if (currentIndex >= menus[currentMealType].length - 2) { // -2 because we don't want to show the "end of month" message
+        rightArrow.style.opacity = '0.3';
+        rightArrow.style.pointerEvents = 'none';
+      } else {
+        rightArrow.style.opacity = '1';
+        rightArrow.style.pointerEvents = 'auto';
+      }
+    }
 
     let puan = 0;
     function puanGonder() {
@@ -273,6 +468,16 @@
     function temizle() {
       document.getElementById('yorum').value = '';
     }
+
+    // Menüleri periyodik olarak güncelle (her 5 dakikada bir)
+    setInterval(() => {
+      const updatedMenus = createMenuData();
+      menus.breakfast = updatedMenus.breakfast;
+      menus.dinner = updatedMenus.dinner;
+      renderMenus();
+    }, 5 * 60 * 1000); // 5 dakika
+
+    renderMenus();
   </script>
 </body>
 </html>
