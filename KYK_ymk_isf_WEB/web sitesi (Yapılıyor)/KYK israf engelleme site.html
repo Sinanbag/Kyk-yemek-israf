@@ -1,248 +1,237 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Menü Sistemi</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tam Site Tasarımı</title>
   <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: sans-serif; background-color: #f5f5f5; }
+
+    .ust-kutu1 {
+      width: 100%; height: 90px; background-color: #003366;
+      color: white; text-align: center; line-height: 90px;
+      position: fixed; top: 0; left: 0; z-index: 100;
+      font-size: 24px; transition: opacity 0.3s ease;
     }
 
-    /* 1. ve 2. Bar */
-    .top-bar {
-      background-color: #0099cc;
-      color: white;
-      padding: 5px 15px;
-      font-size: 12px;
-      position: fixed;
-      width: 100%;
-      top: 0;
-      z-index: 999;
+    .ust-kutu2 {
+      width: 100%; height: 60px; background-color: #0055a5;
+      color: white; text-align: right; line-height: 60px; padding-right: 20px;
+      position: fixed; top: -60px; left: 0; z-index: 99;
+      font-size: 16px; transition: top 0.3s ease;
     }
 
-    .sticky-bar {
-      background-color: #0077aa;
-      color: white;
-      padding: 10px 15px;
-      font-size: 14px;
-      position: fixed;
-      top: 0;
-      width: 100%;
-      z-index: 998;
-      display: none;
+    .slider {
+      margin-top: 90px; position: relative;
+      width: 100%; height: 337.5px; overflow: hidden; z-index: 10;
     }
-
-    .spacer {
-      height: 60px; /* Top bar yüksekliğini telafi eder */
-    }
-
-    /* Slider */
-    .slider-container {
-      position: relative;
-      width: 100%;
-      height: 400px;
-      overflow: hidden;
-    }
-
     .slide {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      opacity: 0;
-      transition: opacity 1s ease-in-out;
+      width: 100%; height: 100%; position: absolute;
+      opacity: 0; transition: opacity 1s;
+      background-size: cover; background-position: center;
     }
-
-    .slide.active {
-      opacity: 1;
+    .slide.active { opacity: 1; }
+    .slide .overlay {
+      position: absolute; bottom: 0; left: 0; width: 100%; padding: 20px;
+      background-color: rgba(255, 255, 255, 0.7); color: black;
     }
-
-    .slide-caption {
-      position: absolute;
-      bottom: 20px;
-      left: 20px;
-      background-color: rgba(50, 50, 50, 0.5);
-      color: white;
-      padding: 10px;
-    }
-
-    .slide-caption button {
-      margin-top: 5px;
-      background-color: black;
+    .slide .overlay h2 { margin-bottom: 10px; }
+    .slide .overlay button {
+      padding: 10px 20px;
+      background-color: #0077cc;
       color: white;
       border: none;
-      padding: 5px 10px;
+      border-radius: 5px;
       cursor: pointer;
     }
-  </style>
-  <!-- Menü Kaydırıcı -->
-<div class="menu-container">
-  <div class="arrow left" onclick="prevMenu()">&lt;</div>
+    .slide .overlay button:hover {
+      background-color: #005fa3;
+    }
 
-  <div class="menu-wrapper">
-    <div id="menu-lists">
-      <!-- Menü kutuları buraya dinamik olarak gelecek -->
+    .menu-container {
+      display: flex; justify-content: center; align-items: center;
+      margin: 20px auto; position: relative; z-index: 1;
+    }
+    .arrow {
+      font-size: 40px; cursor: pointer;
+      background-color: rgba(200, 200, 200, 0.5);
+      padding: 10px; user-select: none; z-index: 10;
+    }
+    .menu-wrapper {
+      display: flex; overflow: hidden; width: 1000px; height: 320px;
+      position: relative; align-items: center;
+    }
+    #menu-lists {
+      display: flex; transition: transform 1.5s ease-in-out;
+      gap: 10px; align-items: center; justify-content: center;
+      width: 100%;
+    }
+    .menu-list {
+      min-width: 250px; height: 300px; background-color: white;
+      padding: 20px; box-sizing: border-box; text-align: center;
+      border: 2px solid #00bfff; transition: all 0.3s ease;
+      opacity: 1; transform: scale(1);
+    }
+    .menu-list.inactive {
+      opacity: 0.4; transform: scale(0.9);
+    }
+    .menu-list h3 {
+      border-bottom: 1px solid #00bfff; padding-bottom: 10px;
+      margin-bottom: 10px;
+    }
+
+    .puan-container {
+      display: flex; justify-content: space-around;
+      padding: 40px 10%; align-items: flex-start;
+    }
+    .profil-box {
+      display: flex; flex-direction: column; align-items: center;
+      text-align: center;
+    }
+    .profil-box img {
+      width: 200px; height: 200px; border-radius: 50%; margin-bottom: 10px;
+    }
+    .profil-box .puan {
+      font-size: 22px; font-weight: bold; margin-bottom: 5px;
+    }
+    .profil-box .kalan-puan {
+      font-size: 18px; color: #333;
+    }
+
+    .puan-kontrol {
+      width: 50%; display: flex; flex-direction: column;
+    }
+    .puan-kontrol select, .puan-kontrol textarea {
+      margin-bottom: 20px; padding: 10px; font-size: 16px;
+    }
+    .puan-kontrol button {
+      margin-right: 10px; padding: 10px 20px;
+    }
+    .puan-label { margin-top: 20px; font-size: 18px; }
+
+    .footer {
+      width: 100%; text-align: center; margin-top: 50px;
+    }
+    .footer img {
+      width: 100%; max-height: 1350px; object-fit: cover;
+    }
+  </style>
+</head>
+<body>
+  <div class="ust-kutu1" id="kutu1">Hedder</div>
+  <div class="ust-kutu2" id="kutu2">Sabit Menü Yazıları</div>
+
+  <div class="slider" id="slider">
+    <div class="slide active" style="background-image: url('resim1.jpg');">
+      <div class="overlay"><h2>Haber Başlığı 1</h2><button>Daha Fazlası</button></div>
+    </div>
+    <div class="slide" style="background-image: url('resim2.jpg');">
+      <div class="overlay"><h2>Haber Başlığı 2</h2><button>Daha Fazlası</button></div>
+    </div>
+    <div class="slide" style="background-image: url('resim3.jpg');">
+      <div class="overlay"><h2>Haber Başlığı 3</h2><button>Daha Fazlası</button></div>
     </div>
   </div>
 
-  <div class="arrow right" onclick="nextMenu()">&gt;</div>
-</div>
-
-<style>
-.menu-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 50px auto;
-  position: relative;
-  z-index: 1; /* ✅ ALTTA KALMASIN */
-} 
-
-  .arrow {
-    font-size: 40px;
-    cursor: pointer;
-    background-color: rgba(200, 200, 200, 0.5);
-    padding: 10px;
-    user-select: none;
-    z-index: 10;
-  }
-
-  .menu-wrapper {
-    display: flex;
-    overflow: hidden;
-    width: 800px;
-    height: 320px;
-    position: relative;
-  }
-
-  #menu-lists {
-    display: flex;
-    transition: transform 0.3s ease;
-    gap: 10px;
-  }
-
-  .menu-list {
-    min-width: 250px;
-    height: 300px;
-    background-color: white;
-    padding: 20px;
-    box-sizing: border-box;
-    text-align: center;
-    border: 2px solid #00bfff;
-    transition: all 0.3s ease;
-    opacity: 1;
-    transform: scale(1);
-  }
-
-  .menu-list.inactive {
-    opacity: 0.4;
-    transform: scale(0.9);
-  }
-
-  .menu-list h3 {
-    border-bottom: 1px solid #00bfff;
-    padding-bottom: 10px;
-    margin-bottom: 10px;
-  }
-</style>
-
-</head>
-<body>
- <!-- Üstteki 1. kutular -->
-  <div class="ust-kutu1">...</div>
-  <div class="ust-kutu2">...</div>
-
-  <!-- 1. kısım: SLIDER / HABER RESİMLERİ -->
-  <div class="slider">...</div>
-
-  <!-- 2. kısım: Menü Kutuları -->
-  <div class="menu-container">...</div>
-  <div class="top-bar">Seçmiş Olduğunuz Logo Burada Bulunacak</div>
-  <div class="sticky-bar" id="stickyBar">T.C. Kredi ve Yurtlar Kurumu</div>
-
-  <div class="spacer"></div>
-
-  <!-- Slider -->
-  <div class="slider-container" id="slider">
-    <img src="resim1.jpg" class="slide active" alt="Slider 1">
-    <img src="resim2.jpg" class="slide" alt="Slider 2">
-    <img src="resim3.jpg" class="slide" alt="Slider 3">
-
-    <div class="slide-caption" id="slideCaption">
-      <h2>Haber Başlığı 1</h2>
-      <button>Daha Fazlası</button>
+  <div class="menu-container">
+    <div class="arrow left" onclick="prevMenu()">&lt;</div>
+    <div class="menu-wrapper">
+      <div id="menu-lists"></div>
     </div>
+    <div class="arrow right" onclick="nextMenu()">&gt;</div>
+  </div>
+
+  <div class="puan-container">
+    <div class="profil-box">
+      <img src="pp.png" alt="Profil Fotoğrafı" />
+      <div class="puan">Puan: <span id="puan">0</span></div>
+      <div class="kalan-puan">Ödüle Kalan Puan: XXXXX</div>
+    </div>
+
+    <div class="puan-kontrol">
+      <select id="kategori">
+        <option>Tüm Menü</option>
+        <option>Ana Yemek</option>
+        <option>Yan Yiyecek</option>
+        <option>Çorba</option>
+        <option>Ekstra</option>
+      </select>
+      <textarea id="yorum" rows="5" placeholder="Yorumunuzu yazın..."></textarea>
+      <div>
+        <button onclick="puanGonder()">Gönder</button>
+        <button onclick="temizle()">Temizle</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <img src="footer.png" alt="footer" />
   </div>
 
   <script>
-    // Sticky bar gösterme
-    const stickyBar = document.getElementById("stickyBar");
-    const topBarHeight = document.querySelector(".top-bar").offsetHeight;
-    window.addEventListener("scroll", () => {
-      if (window.scrollY > topBarHeight) {
-        stickyBar.style.display = "block";
+    const kutu1 = document.getElementById('kutu1');
+    const kutu2 = document.getElementById('kutu2');
+
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 40) {
+        kutu1.style.opacity = '0';
+        kutu1.style.pointerEvents = 'none';
+        kutu2.style.top = '0';
       } else {
-        stickyBar.style.display = "none";
+        kutu1.style.opacity = '1';
+        kutu1.style.pointerEvents = 'auto';
+        kutu2.style.top = '-60px';
       }
     });
 
-    // Slider
-    const slides = document.querySelectorAll(".slide");
-    const captions = ["Haber Başlığı 1", "Haber Başlığı 2", "Haber Başlığı 3"];
-    const caption = document.getElementById("slideCaption").querySelector("h2");
+    const slides = document.querySelectorAll('.slide');
     let currentSlide = 0;
-
     setInterval(() => {
-      slides[currentSlide].classList.remove("active");
+      slides[currentSlide].classList.remove('active');
       currentSlide = (currentSlide + 1) % slides.length;
-      slides[currentSlide].classList.add("active");
-      caption.textContent = captions[currentSlide];
+      slides[currentSlide].classList.add('active');
     }, 5000);
-  </script>
-  <script>
-  const menus = [
-    { date: '01/06/2025', items: ['ANA YEMEK', 'YAN YİYECEK', 'ÇORBA', 'EKSTRA'] },
-    { date: '02/06/2025', items: ['ANA YEMEK', 'YAN YİYECEK', 'ÇORBA', 'EKSTRA'] },
-    { date: '03/06/2025', items: ['ANA YEMEK', 'YAN YİYECEK', 'ÇORBA', 'EKSTRA'] },
-    { date: '04/06/2025', items: ['ANA YEMEK', 'YAN YİYECEK', 'ÇORBA', 'EKSTRA'] },
-    { date: '05/06/2025', items: ['ANA YEMEK', 'YAN YİYECEK', 'ÇORBA', 'EKSTRA'] }
-  ];
 
-  let currentIndex = 1;
+    const menus = Array.from({ length: 30 }, (_, i) => {
+      const date = new Date(2025, 5, i + 1);
+      return {
+        date: date.toLocaleDateString('tr-TR'),
+        items: ['ANA YEMEK', 'YAN YİYECEK', 'ÇORBA', 'EKSTRA']
+      };
+    });
 
-  function renderMenus() {
-    const wrapper = document.getElementById('menu-lists');
-    wrapper.innerHTML = '';
-
-    for (let i = currentIndex - 1; i <= currentIndex + 1; i++) {
-      if (i >= 0 && i < menus.length) {
-        const div = document.createElement('div');
-        div.className = 'menu-list' + (i === currentIndex ? '' : ' inactive');
-        div.innerHTML = `<h3>${menus[i].date}</h3>` +
-                        menus[i].items.map(item => `<p>${item}</p>`).join('');
-        wrapper.appendChild(div);
+    let currentIndex = 1;
+    function renderMenus() {
+      const wrapper = document.getElementById('menu-lists');
+      wrapper.innerHTML = '';
+      for (let i = currentIndex - 1; i <= currentIndex + 1; i++) {
+        if (i >= 0 && i < menus.length) {
+          const div = document.createElement('div');
+          div.className = 'menu-list' + (i === currentIndex ? '' : ' inactive');
+          div.innerHTML = `<h3>${menus[i].date}</h3>` + menus[i].items.map(item => `<p>${item}</p>`).join('');
+          wrapper.appendChild(div);
+        }
       }
     }
-  }
-
-  function nextMenu() {
-    if (currentIndex < menus.length - 1) {
-      currentIndex++;
-      renderMenus();
+    function nextMenu() {
+      if (currentIndex < menus.length - 1) { currentIndex++; renderMenus(); }
     }
-  }
-
-  function prevMenu() {
-    if (currentIndex > 0) {
-      currentIndex--;
-      renderMenus();
+    function prevMenu() {
+      if (currentIndex > 0) { currentIndex--; renderMenus(); }
     }
-  }
+    renderMenus();
 
-  renderMenus();
-</script>
-
+    let puan = 0;
+    function puanGonder() {
+      puan += 150;
+      document.getElementById('puan').innerText = puan;
+      document.getElementById('yorum').value = '';
+      document.getElementById('kategori').selectedIndex = 0;
+    }
+    function temizle() {
+      document.getElementById('yorum').value = '';
+    }
+  </script>
 </body>
 </html>
