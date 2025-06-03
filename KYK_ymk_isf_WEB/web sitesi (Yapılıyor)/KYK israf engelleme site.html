@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tam Site Tasarımı</title>
+  <script>
+    // Oturum kontrolü
+    window.onload = function() {
+      const isLoggedIn = sessionStorage.getItem('isLoggedIn');
+      if (!isLoggedIn) {
+        window.location.href = 'login.html';
+      }
+    }
+  </script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: sans-serif; background-color: #f5f5f5; }
+
+    .ust-kutu1 {
+      width: 100%; height: 90px; background-color: #003366;
+      color: white; text-align: center; line-height: 90px;
+      position: fixed; top: 0; left: 0; z-index: 100;
+      font-size: 24px; transition: opacity 0.3s ease;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .ust-kutu2 {
+      width: 100%; height: 60px; background-color: #0055a5;
+      color: white; text-align: right; line-height: 60px; padding-right: 20px;
+      position: fixed; top: -60px; left: 0; z-index: 99;
+      font-size: 16px; transition: top 0.3s ease;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+    }
+
+    .student-profile {
+      display: flex;
+      align-items: center;
+      margin-right: 20px;
+      cursor: pointer;
+    }
+
+    .student-profile img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      margin-right: 10px;
+      border: 2px solid white;
+    }
+
+    .student-name {
+      font-size: 16px;
+      color: white;
+    }
+
+    .slider {
+      margin-top: 90px; position: relative;
+      width: 100%; height: 337.5px; overflow: hidden; z-index: 10;
+    }
+    .slide {
+      width: 100%; height: 100%; position: absolute;
+      opacity: 0; transition: opacity 1s;
+      background-size: cover; background-position: center;
+    }
+    .slide.active { opacity: 1; }
+    .slide .overlay {
+      position: absolute; bottom: 0; left: 0; width: 100%; padding: 20px;
+      background-color: rgba(255, 255, 255, 0.7); color: black;
+    }
+    .slide .overlay h2 { margin-bottom: 10px; }
+    .slide .overlay button {
+      padding: 10px 20px;
+      background-color: #0077cc;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .slide .overlay button:hover {
+      background-color: #005fa3;
+    }
+
+    .menu-container {
+      display: flex; justify-content: center; align-items: center;
+      margin: 20px auto; position: relative; z-index: 1;
+    }
+    .arrow {
+      font-size: 40px; cursor: pointer;
+      background-color: rgba(200, 200, 200, 0.5);
+      padding: 10px; user-select: none; z-index: 10;
+    }
+    .menu-wrapper {
+      display: flex; overflow: hidden; width: 1000px; height: 320px;
+      position: relative; align-items: center;
+    }
+    #menu-lists {
+      display: flex; transition: transform 1.5s ease-in-out;
+      gap: 10px; align-items: center; justify-content: center;
+      width: 100%;
+    }
+    .menu-list {
+      min-width: 250px; height: 300px; background-color: white;
+      padding: 20px; box-sizing: border-box; text-align: center;
+      border: 2px solid #00bfff; transition: all 0.3s ease;
+      opacity: 1; transform: scale(1);
+    }
+    .menu-list.inactive {
+      opacity: 0.4; transform: scale(0.9);
+    }
+    .menu-list h3 {
+      border-bottom: 1px solid #00bfff; padding-bottom: 10px;
+      margin-bottom: 10px;
+    }
+
+    .puan-container {
+      display: flex; justify-content: space-around;
+      padding: 40px 10%; align-items: flex-start;
+    }
+    .profil-box {
+      display: flex; flex-direction: column; align-items: center;
+      text-align: center;
+    }
+    .profil-box img {
+      width: 200px; height: 200px; border-radius: 50%; margin-bottom: 10px;
+    }
+    .profil-box .puan {
+      font-size: 22px; font-weight: bold; margin-bottom: 5px;
+    }
+    .profil-box .kalan-puan {
+      font-size: 18px; color: #333;
+    }
+
+    .puan-kontrol {
+      width: 50%; display: flex; flex-direction: column;
+    }
+    .puan-kontrol select, .puan-kontrol textarea {
+      margin-bottom: 20px; padding: 10px; font-size: 16px;
+    }
+    .puan-kontrol button {
+      margin-right: 10px; padding: 10px 20px;
+    }
+    .puan-label { margin-top: 20px; font-size: 18px; }
+
+    .footer {
+      width: 100%; text-align: center; margin-top: 50px;
+    }
+    .footer img {
+      width: 100%; max-height: 1350px; object-fit: cover;
+    }
+  </style>
+</head>
+<body>
+  <div class="ust-kutu1" id="kutu1">KYK Yemek İsrafı Önleme</div>
+  <div class="ust-kutu2" id="kutu2">
+    <div class="student-profile">
+      <img src="pp.png" alt="Profil Fotoğrafı" />
+      <span class="student-name">Test Öğrenci</span>
+    </div>
+    Sabit Menü Yazıları
+  </div>
+
+  <div class="slider" id="slider">
+    <div class="slide active" style="background-image: url('resim1.jpg');">
+      <div class="overlay"><h2>Haber Başlığı 1</h2><button>Daha Fazlası</button></div>
+    </div>
+    <div class="slide" style="background-image: url('resim2.jpg');">
+      <div class="overlay"><h2>Haber Başlığı 2</h2><button>Daha Fazlası</button></div>
+    </div>
+    <div class="slide" style="background-image: url('resim3.jpg');">
+      <div class="overlay"><h2>Haber Başlığı 3</h2><button>Daha Fazlası</button></div>
+    </div>
+  </div>
+
+  <div class="menu-container">
+    <div class="arrow left" onclick="prevMenu()">&lt;</div>
+    <div class="menu-wrapper">
+      <div id="menu-lists"></div>
+    </div>
+    <div class="arrow right" onclick="nextMenu()">&gt;</div>
+  </div>
+
+  <div class="puan-container">
+    <div class="profil-box">
+      <img src="pp.png" alt="Profil Fotoğrafı" />
+      <div class="puan">Puan: <span id="puan">0</span></div>
+      <div class="kalan-puan">Ödüle Kalan Puan: XXXXX</div>
+    </div>
+
+    <div class="puan-kontrol">
+      <select id="kategori">
+        <option>Tüm Menü</option>
+        <option>Ana Yemek</option>
+        <option>Yan Yiyecek</option>
+        <option>Çorba</option>
+        <option>Ekstra</option>
+      </select>
+      <textarea id="yorum" rows="5" placeholder="Yorumunuzu yazın..."></textarea>
+      <div>
+        <button onclick="puanGonder()">Gönder</button>
+        <button onclick="temizle()">Temizle</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <img src="footer.png" alt="footer" />
+  </div>
+
+  <script>
+    const kutu1 = document.getElementById('kutu1');
+    const kutu2 = document.getElementById('kutu2');
+
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 40) {
+        kutu1.style.opacity = '0';
+        kutu1.style.pointerEvents = 'none';
+        kutu2.style.top = '0';
+      } else {
+        kutu1.style.opacity = '1';
+        kutu1.style.pointerEvents = 'auto';
+        kutu2.style.top = '-60px';
+      }
+    });
+
+    const slides = document.querySelectorAll('.slide');
+    let currentSlide = 0;
+    setInterval(() => {
+      slides[currentSlide].classList.remove('active');
+      currentSlide = (currentSlide + 1) % slides.length;
+      slides[currentSlide].classList.add('active');
+    }, 5000);
+
+    const menus = Array.from({ length: 30 }, (_, i) => {
+      const date = new Date(2025, 5, i + 1);
+      return {
+        date: date.toLocaleDateString('tr-TR'),
+        items: ['ANA YEMEK', 'YAN YİYECEK', 'ÇORBA', 'EKSTRA']
+      };
+    });
+
+    let currentIndex = 1;
+    function renderMenus() {
+      const wrapper = document.getElementById('menu-lists');
+      wrapper.innerHTML = '';
+      for (let i = currentIndex - 1; i <= currentIndex + 1; i++) {
+        if (i >= 0 && i < menus.length) {
+          const div = document.createElement('div');
+          div.className = 'menu-list' + (i === currentIndex ? '' : ' inactive');
+          div.innerHTML = `<h3>${menus[i].date}</h3>` + menus[i].items.map(item => `<p>${item}</p>`).join('');
+          wrapper.appendChild(div);
+        }
+      }
+    }
+    function nextMenu() {
+      if (currentIndex < menus.length - 1) { currentIndex++; renderMenus(); }
+    }
+    function prevMenu() {
+      if (currentIndex > 0) { currentIndex--; renderMenus(); }
+    }
+    renderMenus();
+
+    let puan = 0;
+    function puanGonder() {
+      puan += 150;
+      document.getElementById('puan').innerText = puan;
+      document.getElementById('yorum').value = '';
+      document.getElementById('kategori').selectedIndex = 0;
+    }
+    function temizle() {
+      document.getElementById('yorum').value = '';
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KYK Yemek İsrafı Önleme - Personel Paneli</title>
+  <script>
+    // Oturum kontrolü
+    window.onload = function() {
+      const isLoggedIn = sessionStorage.getItem('isLoggedIn');
+      const userType = sessionStorage.getItem('userType');
+      if (!isLoggedIn || userType !== 'staff') {
+        window.location.href = 'login.html';
+      }
+    }
+  </script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: sans-serif; background-color: #f5f5f5; }
+
+    .ust-kutu1 {
+      width: 100%; height: 90px; background-color: #003366;
+      color: white; text-align: center; line-height: 90px;
+      position: fixed; top: 0; left: 0; z-index: 100;
+      font-size: 24px; transition: opacity 0.3s ease;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .ust-kutu2 {
+      width: 100%; height: 60px; background-color: #0055a5;
+      color: white; text-align: right; line-height: 60px; padding-right: 20px;
+      position: fixed; top: -60px; left: 0; z-index: 99;
+      font-size: 16px; transition: top 0.3s ease;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+    }
+
+    .staff-profile {
+      display: flex;
+      align-items: center;
+      margin-right: 20px;
+      cursor: pointer;
+    }
+
+    .staff-profile img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      margin-right: 10px;
+      border: 2px solid white;
+    }
+
+    .staff-name {
+      font-size: 16px;
+      color: white;
+    }
+
+    .menu-management {
+      margin-top: 150px;
+      padding: 20px;
+    }
+
+    .menu-section {
+      background-color: white;
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    .menu-section h2 {
+      color: #003366;
+      margin-bottom: 20px;
+      border-bottom: 2px solid #003366;
+      padding-bottom: 10px;
+    }
+
+    .menu-form {
+      display: grid;
+      gap: 15px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form-group label {
+      margin-bottom: 5px;
+      color: #333;
+      font-weight: bold;
+    }
+
+    .form-group input {
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 14px;
+    }
+
+    .menu-items {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 15px;
+      margin-top: 15px;
+    }
+
+    .menu-item {
+      background-color: #f8f9fa;
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ddd;
+    }
+
+    .menu-item h4 {
+      color: #003366;
+      margin-bottom: 5px;
+    }
+
+    .menu-item p {
+      color: #666;
+      font-size: 14px;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background-color 0.3s;
+    }
+
+    .btn-primary {
+      background-color: #003366;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background-color: #002244;
+    }
+
+    .btn-secondary {
+      background-color: #6c757d;
+      color: white;
+    }
+
+    .btn-secondary:hover {
+      background-color: #5a6268;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+    }
+  </style>
+</head>
+<body>
+  <div class="ust-kutu1" id="kutu1">KYK Yemek İsrafı Önleme - Personel Paneli</div>
+  <div class="ust-kutu2" id="kutu2">
+    <div class="staff-profile">
+      <img src="pp.png" alt="Profil Fotoğrafı" />
+      <span class="staff-name">Test Görevli</span>
+    </div>
+    Sabit Menü Yazıları
+  </div>
+
+  <div class="menu-management">
+    <div class="menu-section">
+      <h2>Kahvaltı Menüsü Ekle</h2>
+      <form class="menu-form" id="breakfastForm">
+        <div class="form-group">
+          <label for="breakfastDate">Tarih</label>
+          <input type="date" id="breakfastDate" required>
+        </div>
+        <div class="form-group">
+          <label for="breakfastMain">Ana Yemek</label>
+          <input type="text" id="breakfastMain" required>
+        </div>
+        <div class="form-group">
+          <label for="breakfastSide">Yan Yiyecek</label>
+          <input type="text" id="breakfastSide" required>
+        </div>
+        <div class="form-group">
+          <label for="breakfastExtra">Ekstra</label>
+          <input type="text" id="breakfastExtra">
+        </div>
+        <div class="action-buttons">
+          <button type="submit" class="btn btn-primary">Menüyü Kaydet</button>
+          <button type="button" class="btn btn-secondary" onclick="clearBreakfastForm()">Temizle</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="menu-section">
+      <h2>Akşam Yemeği Menüsü Ekle</h2>
+      <form class="menu-form" id="dinnerForm">
+        <div class="form-group">
+          <label for="dinnerDate">Tarih</label>
+          <input type="date" id="dinnerDate" required>
+        </div>
+        <div class="form-group">
+          <label for="dinnerMain">Ana Yemek</label>
+          <input type="text" id="dinnerMain" required>
+        </div>
+        <div class="form-group">
+          <label for="dinnerSide">Yan Yiyecek</label>
+          <input type="text" id="dinnerSide" required>
+        </div>
+        <div class="form-group">
+          <label for="dinnerSoup">Çorba</label>
+          <input type="text" id="dinnerSoup" required>
+        </div>
+        <div class="form-group">
+          <label for="dinnerExtra">Ekstra</label>
+          <input type="text" id="dinnerExtra">
+        </div>
+        <div class="action-buttons">
+          <button type="submit" class="btn btn-primary">Menüyü Kaydet</button>
+          <button type="button" class="btn btn-secondary" onclick="clearDinnerForm()">Temizle</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Üst menü scroll efekti
+    const kutu1 = document.getElementById('kutu1');
+    const kutu2 = document.getElementById('kutu2');
+
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 40) {
+        kutu1.style.opacity = '0';
+        kutu1.style.pointerEvents = 'none';
+        kutu2.style.top = '0';
+      } else {
+        kutu1.style.opacity = '1';
+        kutu1.style.pointerEvents = 'auto';
+        kutu2.style.top = '-60px';
+      }
+    });
+
+    // Form işlemleri
+    document.getElementById('breakfastForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const menuData = {
+        date: document.getElementById('breakfastDate').value,
+        main: document.getElementById('breakfastMain').value,
+        side: document.getElementById('breakfastSide').value,
+        extra: document.getElementById('breakfastExtra').value
+      };
+      saveMenu('breakfast', menuData);
+    });
+
+    document.getElementById('dinnerForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const menuData = {
+        date: document.getElementById('dinnerDate').value,
+        main: document.getElementById('dinnerMain').value,
+        side: document.getElementById('dinnerSide').value,
+        soup: document.getElementById('dinnerSoup').value,
+        extra: document.getElementById('dinnerExtra').value
+      };
+      saveMenu('dinner', menuData);
+    });
+
+    function saveMenu(type, data) {
+      // Menü verilerini localStorage'a kaydet
+      const menus = JSON.parse(localStorage.getItem('menus') || '{}');
+      if (!menus[type]) menus[type] = [];
+      menus[type].push(data);
+      localStorage.setItem('menus', JSON.stringify(menus));
+      
+      alert('Menü başarıyla kaydedildi!');
+      if (type === 'breakfast') {
+        clearBreakfastForm();
+      } else {
+        clearDinnerForm();
+      }
+    }
+
+    function clearBreakfastForm() {
+      document.getElementById('breakfastForm').reset();
+    }
+
+    function clearDinnerForm() {
+      document.getElementById('dinnerForm').reset();
+    }
+  </script>
+</body>
+</html> 
