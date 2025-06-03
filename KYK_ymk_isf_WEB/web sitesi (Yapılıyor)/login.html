@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KYK Yemek İsrafı Önleme - Giriş</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .logo-container {
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .logo-container img {
+            max-width: 200px;
+            height: auto;
+        }
+
+        .login-container {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .user-type-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .user-type-btn {
+            flex: 1;
+            padding: 0.8rem;
+            border: 2px solid #007bff;
+            background: none;
+            color: #007bff;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .user-type-btn.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .input-group {
+            margin-bottom: 1rem;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .forgot-password {
+            text-align: right;
+            margin-bottom: 1rem;
+        }
+
+        .forgot-password a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 0.8rem;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
+
+        .login-btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="logo-container">
+        <img src="https://www.kyk.gov.tr/Content/images/logo.png" alt="KYK Logo">
+    </div>
+
+    <div class="login-container">
+        <div class="user-type-buttons">
+            <button class="user-type-btn active" onclick="setUserType('student')">Öğrenci</button>
+            <button class="user-type-btn" onclick="setUserType('staff')">Görevli</button>
+        </div>
+
+        <form id="loginForm" onsubmit="handleLogin(event)">
+            <div class="input-group">
+                <label id="usernameLabel" for="username">Öğrenci Numarası</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+
+            <div class="input-group">
+                <label for="password">Şifre</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+
+            <div class="forgot-password">
+                <a href="#">Şifremi Unuttum</a>
+            </div>
+
+            <button type="submit" class="login-btn">Giriş Yap</button>
+        </form>
+    </div>
+
+    <script>
+        let currentUserType = 'student';
+
+        function setUserType(type) {
+            currentUserType = type;
+            const buttons = document.querySelectorAll('.user-type-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            const usernameLabel = document.getElementById('usernameLabel');
+            usernameLabel.textContent = type === 'student' ? 'Öğrenci Numarası' : 'Görevli Numarası';
+        }
+
+        function handleLogin(event) {
+            event.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            // Test kullanıcı bilgileri
+            if (currentUserType === 'student') {
+                if (username === '2023001' && password === 'test123') {
+                    sessionStorage.setItem('isLoggedIn', 'true');
+                    sessionStorage.setItem('userType', 'student');
+                    sessionStorage.setItem('userName', 'Test Öğrenci');
+                    window.location.href = 'KYK israf engelleme site.html';
+                } else {
+                    alert('Hatalı öğrenci numarası veya şifre!');
+                }
+            } else {
+                if (username === 'G001' && password === 'staff123') {
+                    sessionStorage.setItem('isLoggedIn', 'true');
+                    sessionStorage.setItem('userType', 'staff');
+                    sessionStorage.setItem('userName', 'Test Görevli');
+                    window.location.href = 'staff-dashboard.html';
+                } else {
+                    alert('Hatalı görevli numarası veya şifre!');
+                }
+            }
+        }
+    </script>
+</body>
+</html> 

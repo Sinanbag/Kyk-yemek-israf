@@ -4,6 +4,15 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Tam Site Tasarımı</title>
+  <script>
+    // Oturum kontrolü
+    window.onload = function() {
+      const isLoggedIn = sessionStorage.getItem('isLoggedIn');
+      if (!isLoggedIn) {
+        window.location.href = 'login.html';
+      }
+    }
+  </script>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: sans-serif; background-color: #f5f5f5; }
@@ -13,6 +22,9 @@
       color: white; text-align: center; line-height: 90px;
       position: fixed; top: 0; left: 0; z-index: 100;
       font-size: 24px; transition: opacity 0.3s ease;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
     .ust-kutu2 {
@@ -20,6 +32,29 @@
       color: white; text-align: right; line-height: 60px; padding-right: 20px;
       position: fixed; top: -60px; left: 0; z-index: 99;
       font-size: 16px; transition: top 0.3s ease;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+    }
+
+    .student-profile {
+      display: flex;
+      align-items: center;
+      margin-right: 20px;
+      cursor: pointer;
+    }
+
+    .student-profile img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      margin-right: 10px;
+      border: 2px solid white;
+    }
+
+    .student-name {
+      font-size: 16px;
+      color: white;
     }
 
     .slider {
@@ -119,8 +154,14 @@
   </style>
 </head>
 <body>
-  <div class="ust-kutu1" id="kutu1">Hedder</div>
-  <div class="ust-kutu2" id="kutu2">Sabit Menü Yazıları</div>
+  <div class="ust-kutu1" id="kutu1">KYK Yemek İsrafı Önleme</div>
+  <div class="ust-kutu2" id="kutu2">
+    <div class="student-profile">
+      <img src="pp.png" alt="Profil Fotoğrafı" />
+      <span class="student-name">Test Öğrenci</span>
+    </div>
+    Sabit Menü Yazıları
+  </div>
 
   <div class="slider" id="slider">
     <div class="slide active" style="background-image: url('resim1.jpg');">
