@@ -51,13 +51,20 @@ public class MainActivity extends AppCompatActivity {
                 String email = emailInput.getText().toString().trim();
                 String password = passwordInput.getText().toString();
 
-                if (email.isEmpty() || password.isEmpty()) {
-                    Toast.makeText(MainActivity.this, "Lütfen tüm alanları doldurun", Toast.LENGTH_SHORT).show();
+                if (email.isEmpty()) {
+                    Toast.makeText(MainActivity.this, "Lütfen e-posta adresinizi girin", Toast.LENGTH_SHORT).show();
                     return;
                 }
-
                 if (!isValidEmail(email)) {
                     Toast.makeText(MainActivity.this, "Lütfen geçerli bir e-posta adresi girin", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (password.isEmpty()) {
+                    Toast.makeText(MainActivity.this, "Lütfen şifrenizi girin", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (password.length() < 6) {
+                    Toast.makeText(MainActivity.this, "Şifre en az 6 karakter olmalıdır", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -82,13 +89,20 @@ public class MainActivity extends AppCompatActivity {
                 String email = emailInput.getText().toString().trim();
                 String password = passwordInput.getText().toString();
 
-                if (email.isEmpty() || password.isEmpty()) {
-                    Toast.makeText(MainActivity.this, "Lütfen tüm alanları doldurun", Toast.LENGTH_SHORT).show();
+                if (email.isEmpty()) {
+                    Toast.makeText(MainActivity.this, "Lütfen e-posta adresinizi girin", Toast.LENGTH_SHORT).show();
                     return;
                 }
-
                 if (!isValidEmail(email)) {
                     Toast.makeText(MainActivity.this, "Lütfen geçerli bir e-posta adresi girin", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (password.isEmpty()) {
+                    Toast.makeText(MainActivity.this, "Lütfen şifrenizi girin", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (password.length() < 6) {
+                    Toast.makeText(MainActivity.this, "Şifre en az 6 karakter olmalıdır", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -122,29 +136,22 @@ public class MainActivity extends AppCompatActivity {
 
         // Şifremi unuttum tıklama olayı
         forgotPasswordText.setOnClickListener(v -> {
-            String email = emailInput.getText().toString().trim();
+            Intent intent = new Intent(MainActivity.this, ResetPasswordActivity.class);
+            startActivity(intent);
+        });
 
-            if (email.isEmpty()) {
-                Toast.makeText(MainActivity.this, "Lütfen e-posta adresinizi girin", Toast.LENGTH_SHORT).show();
-                return;
-            }
+        // Eğitim butonu tıklama olayı
+        Button btnEducation = findViewById(R.id.btnEducation);
+        btnEducation.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, EducationActivity.class);
+            startActivity(intent);
+        });
 
-            if (!isValidEmail(email)) {
-                Toast.makeText(MainActivity.this, "Lütfen geçerli bir e-posta adresi girin", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            mAuth.sendPasswordResetEmail(email)
-                    .addOnSuccessListener(aVoid -> {
-                        Toast.makeText(MainActivity.this,
-                                "Şifre sıfırlama bağlantısı e-posta adresinize gönderildi",
-                                Toast.LENGTH_LONG).show();
-                    })
-                    .addOnFailureListener(e -> {
-                        Toast.makeText(MainActivity.this,
-                                "Şifre sıfırlama bağlantısı gönderilemedi: " + e.getMessage(),
-                                Toast.LENGTH_LONG).show();
-                    });
+        // Hakkında butonu tıklama olayı
+        Button btnAbout = findViewById(R.id.btnAbout);
+        btnAbout.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, AboutActivity.class);
+            startActivity(intent);
         });
     }
 

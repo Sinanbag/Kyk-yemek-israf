@@ -1,4 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">KYK DONUSUM</string>
+    <string name="app_name">KYK Dönüşüm</string>
+    <string name="main_title">Dönüşüm Paneli</string>
+    <string name="welcome">Hoş geldiniz!</string>
+    <string name="email_hint">E-posta</string>
+    <string name="password_hint">Şifre</string>
+    <string name="forgot_password">Şifremi Unuttum</string>
+    <string name="login">Giriş Yap</string>
+    <string name="register">Kayıt Ol</string>
+    <string name="education">Eğitim</string>
+    <string name="about">Hakkında</string>
+    <string name="about_title">KYK Dönüşüm Uygulaması</string>
+    <string name="about_desc">Bu uygulama, KYK yurt dönüşüm işlemlerini kolaylaştırmak için geliştirilmiştir.</string>
+    <string name="version">Sürüm: 1.0.0</string>
 </resources>

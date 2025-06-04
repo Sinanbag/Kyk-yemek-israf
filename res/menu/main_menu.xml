@@ -18,7 +18,7 @@
         app:showAsAction="never"/>
     <item
         android:id="@+id/action_logout"
+        android:icon="@drawable/ic_exit_to_app"
         android:title="Çıkış Yap"
-        android:icon="@android:drawable/ic_menu_close_clear_cancel"
-        app:showAsAction="never"/>
-</menu> 
+        app:showAsAction="ifRoom" />
+</menu>
