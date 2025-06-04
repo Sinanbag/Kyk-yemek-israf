@@ -9,7 +9,7 @@
     android:allowBackup="true"
     android:label="KYK DONUSUM"
     android:supportsRtl="true"
-    android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar">
+    android:theme="@style/Theme.KYKDonusum">
 
     <activity
         android:name=".MainActivity"
